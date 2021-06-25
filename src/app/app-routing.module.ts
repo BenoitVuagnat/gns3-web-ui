@@ -211,8 +211,9 @@ const routes: Routes = [
     canActivate: [LoginGuard]
   },
   {
-    path: 'user_management',
-    component: UserManagementComponent
+    path: 'server/:server_id/user_management',
+    component: UserManagementComponent,
+    canActivate: [LoginGuard]
   },
   {
     path: '**',

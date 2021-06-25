@@ -17,6 +17,6 @@ export class UserService {
 
   getUser(server: Server){
     //return this.http.get("http://10.237.0.165:3080/v3/users");
-    return this.httpServer.get(server, 'users');
+    return this.httpServer.get(server, '/users');
   }
 }
