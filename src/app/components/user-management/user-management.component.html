@@ -1,30 +1,36 @@
-<div class="default-header">
-  <p>
-    user-management works!
-  </p>
-  <table class="table table-bordered">
-    <tr class="bg-primary">
-      <th>created at</th>
-      <th>email</th>
-      <th>full name</th>
-      <th>is active</th>
-      <th>is superadmin</th>
-      <th>updated_at</th>
-      <th>user_id</th>
-      <th>username</th>
-    </tr>
-    <tr *ngFor="let user of users">
-      <td>{{ user.created_at }}</td>
-      <td>{{ user.email }}</td>
-      <td>{{ user.full_name }}</td>
-      <td>{{ user.is_active }}</td>
-      <td>{{ user.is_superadmin }}</td>
-      <td>{{ user.updated_at }}</td>
-      <td>{{ user.user_id }}</td>
-      <td>{{ user.username }}</td>
+<div class="content">
+  <div class="default-header">
+    
+    <div class="row">
+      <h1 class="col">User Management</h1>
+      <button class="col" mat-raised-button color="primary" (click)="addUser()" class="add-button">
+        Add user
+      </button>
+    </div>
+    <table class="table table-bordered">
+      <tr class="bg-primary">
+        <th>created at</th>
+        <th>email</th>
+        <th>full name</th>
+        <th>is active</th>
+        <th>is superadmin</th>
+        <th>updated_at</th>
+        <th>user_id</th>
+        <th>username</th>
+      </tr>
+      <tr *ngFor="let user of users">
+        <td>{{ user.created_at }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.full_name }}</td>
+        <td>{{ user.is_active }}</td>
+        <td>{{ user.is_superadmin }}</td>
+        <td>{{ user.updated_at }}</td>
+        <td>{{ user.user_id }}</td>
+        <td>{{ user.username }}</td>
 
-      
-    </tr>
+        
+      </tr>
 
-  </table>
+    </table>
+  </div>
 </div>

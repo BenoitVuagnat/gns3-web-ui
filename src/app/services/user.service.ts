@@ -19,4 +19,11 @@ export class UserService {
     //return this.http.get("http://10.237.0.165:3080/v3/users");
     return this.httpServer.get(server, '/users');
   }
+
+  createUser(server: Server, username: string, email: string, full_name: string, password: string){
+    //return this.http.get("http://10.237.0.165:3080/v3/users");
+    return this.httpServer.post(server, '/users', { username: username, email: email, full_name: full_name, password: password});
+  }
+
+
 }

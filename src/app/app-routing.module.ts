@@ -192,6 +192,11 @@ const routes: Routes = [
       { path: 'server/:server_id/preferences/iou/templates/:template_id', component: IouTemplateDetailsComponent, canActivate: [LoginGuard] },
       { path: 'server/:server_id/preferences/iou/templates/:template_id/copy', component: CopyIouTemplateComponent, canActivate: [LoginGuard] },
       { path: 'server/:server_id/preferences/iou/addtemplate', component: AddIouTemplateComponent, canActivate: [LoginGuard] },
+      {
+        path: 'server/:server_id/user_management',
+        component: UserManagementComponent,
+        canActivate: [LoginGuard]
+      },
     ],
   },
   {
@@ -210,11 +215,7 @@ const routes: Routes = [
     component: WebConsoleFullWindowComponent,
     canActivate: [LoginGuard]
   },
-  {
-    path: 'server/:server_id/user_management',
-    component: UserManagementComponent,
-    canActivate: [LoginGuard]
-  },
+  
   {
     path: '**',
     component: PageNotFoundComponent,

@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { Server } from '../../models/server';
 import { ServerService } from '../../services/server.service';
 import { UserService } from '../../services/user.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AddUserComponent } from '../add-user/add-user.component';
 
 @Component({
   selector: 'app-user-management',
@@ -17,7 +19,8 @@ export class UserManagementComponent implements OnInit {
   constructor(
     private userService:UserService,
     private route: ActivatedRoute,
-    private serverService: ServerService
+    private serverService: ServerService,
+    public dialog: MatDialog,
     ) {}
 
   ngOnInit() {
@@ -29,6 +32,16 @@ export class UserManagementComponent implements OnInit {
               this.users = response;
           });
         });
+  }
+
+  addUser() {
+    const dialogRef = this.dialog.open(AddUserComponent, {
+      width: '400px',
+      autoFocus: false,
+      disableClose: true,
+    });
+    let instance = dialogRef.componentInstance;
+    instance.server = this.server;
   }
 
   copyToken() {
