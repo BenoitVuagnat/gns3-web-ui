@@ -274,6 +274,7 @@ import { UserManagementComponent } from './components/user-management/user-manag
 import { UserService } from './services/user.service';
 import { LoggedUserComponent } from './components/users/logged-user/logged-user.component';
 import { AddUserComponent } from './components/add-user/add-user.component';
+import { ManageUserComponent } from './components/manage-user/manage-user.component';
 
 @NgModule({
   declarations: [
@@ -462,7 +463,8 @@ import { AddUserComponent } from './components/add-user/add-user.component';
     EditNetworkConfigurationDialogComponent,
     UserManagementComponent,
     ProjectReadmeComponent,
-    AddUserComponent
+    AddUserComponent,
+    ManageUserComponent
   ],
   imports: [
     BrowserModule,

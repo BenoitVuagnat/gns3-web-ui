@@ -1,0 +1,144 @@
+<p>
+  Manage user
+</p>
+
+<mat-grid-list cols="2" rowHeight="6:1">
+  <mat-grid-tile>
+    <mat-grid-list cols="2" rowHeight="2:1">
+      <form [formGroup]="userForm" class="file-name-form">
+        <mat-form-field class="file-name-form-field">
+          <input
+            matInput
+            (keydown)="onKeyDown($event)"
+            formControlName="username"
+          
+            [ngClass]="{ 'is-invalid': form.projectName?.errors }"
+            placeholder="Please enter a username"
+            value = {{user.username}}
+          />
+          <mat-error *ngIf="form.username?.touched && form.username?.errors && form.username?.errors.required"
+            >Username is required</mat-error
+          >
+          <mat-error *ngIf="form.projectName?.errors && form.projectName?.errors.invalidName"
+            >Username is incorrect</mat-error
+          >
+          <mat-error *ngIf="form.projectName?.errors && form.projectName?.errors.projectExist"
+            >User with this username exists</mat-error
+          >
+        </mat-form-field>
+        
+      </form>
+    </mat-grid-list>
+    
+    
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <p>User ID : {{user.user_id}}</p>
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <form [formGroup]="userForm" class="file-name-form">
+      <mat-form-field class="file-name-form-field">
+        <input
+          matInput
+          (keydown)="onKeyDown($event)"
+          formControlName="email"
+          type="text"
+          [ngClass]="{ 'is-invalid': form.projectName?.errors }"
+          placeholder="Please enter an email"
+          value={{user.email}}
+        />
+        <mat-error *ngIf="form.email?.touched && form.email?.errors && form.email?.errors.required"
+          >email is required</mat-error
+        >
+        <mat-error *ngIf="form.projectName?.errors && form.projectName?.errors.invalidName"
+          >email is incorrect</mat-error
+        >
+        <mat-error *ngIf="form.projectName?.errors && form.projectName?.errors.projectExist"
+          >User with this email exists</mat-error
+        >
+      </mat-form-field>
+    </form>
+  </mat-grid-tile>
+  <mat-grid-tile><p>Created_at : {{user.created_at}}</p></mat-grid-tile>
+  <mat-grid-tile>
+    <form [formGroup]="userForm" class="file-name-form">
+      <mat-form-field class="file-name-form-field">
+        <input
+          matInput
+          (keydown)="onKeyDown($event)"
+          formControlName="full_name"
+          type="text"
+          [ngClass]="{ 'is-invalid': form.projectName?.errors }"
+          placeholder="Please enter a full name"
+          value={{user.full_name}}
+        />
+        <mat-error *ngIf="form.full_name?.touched && form.full_name?.errors && form.full_name?.errors.required"
+          >Full name is required</mat-error
+        >
+        <mat-error *ngIf="form.projectName?.errors && form.projectName?.errors.invalidName"
+          >Full name is incorrect</mat-error
+        >
+        <mat-error *ngIf="form.projectName?.errors && form.projectName?.errors.projectExist"
+          >User with this full name exists</mat-error
+        >
+      </mat-form-field>
+    </form>
+  </mat-grid-tile>
+  <mat-grid-tile><p>Updated at : {{user.updated_at}}</p></mat-grid-tile>
+  <mat-grid-tile>
+    <form [formGroup]="userForm" class="file-name-form">
+      <mat-form-field class="file-name-form-field">
+        <input
+          matInput
+          (keydown)="onKeyDown($event)"
+          formControlName="password"
+          type="password"
+          [ngClass]="{ 'is-invalid': form.projectName?.errors }"
+          placeholder="Change password"
+        />
+        <mat-error *ngIf="form.projectName?.touched && form.projectName?.errors && form.projectName?.errors.required"
+          >Full name is required</mat-error
+        >
+        <mat-error *ngIf="form.projectName?.errors && form.projectName?.errors.invalidName"
+          >Full name is incorrect</mat-error
+        >
+        <mat-error *ngIf="form.projectName?.errors && form.projectName?.errors.projectExist"
+          >User with this full name exists</mat-error
+        >
+      </mat-form-field>
+    </form>
+  </mat-grid-tile>
+  <mat-grid-tile></mat-grid-tile>
+  <mat-grid-tile>
+    <form [formGroup]="userForm" class="file-name-form">
+      <mat-form-field class="file-name-form-field">
+        <input
+          matInput
+          (keydown)="onKeyDown($event)"
+          formControlName="confirm_password"
+          type="password"
+          [ngClass]="{ 'is-invalid': form.projectName?.errors }"
+          [errorStateMatcher]="matcher"
+          placeholder="Confirm password"
+        />
+        <mat-error *ngIf="form.projectName?.touched && form.projectName?.errors && form.projectName?.errors.required"
+          >Full name is required</mat-error
+        >
+        <mat-error *ngIf="form.projectName?.errors && form.projectName?.errors.invalidName"
+          >Full name is incorrect</mat-error
+        >
+        <mat-error *ngIf="form.projectName?.errors && form.projectName?.errors.projectExist"
+          >User with this full name exists</mat-error
+        >
+        <mat-error *ngIf="form.confirm_password?.errors.mustMatch"
+          >Passwords must match</mat-error
+        >
+      </mat-form-field>
+    </form>
+  </mat-grid-tile>
+</mat-grid-list>
+
+<button mat-button (click)="onNoClick()" color="accent">Cancel</button>
+<button mat-button (click)="onUpdateClick()" tabindex="2" class="add-project-button" mat-raised-button color="primary">
+  Update user
+</button>

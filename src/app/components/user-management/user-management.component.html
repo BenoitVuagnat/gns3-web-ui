@@ -7,6 +7,43 @@
         Add user
       </button>
     </div>
+    <div class="default-content">
+      <div class="mat-elevation-z8">
+        <mat-table #table [dataSource]="dataSource | projectsfilter: searchText" matSort>
+          <ng-container matColumnDef="username">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Username </mat-header-cell><!---->
+            <mat-cell *matCellDef="let row">
+              <a (click)="manageUser(row)" [routerLink] class="table-link">{{ row.username }}</a>
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="full_name">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Full name </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{ row.full_name }} </mat-cell>
+          </ng-container>
+  
+          <ng-container matColumnDef="actions">
+            <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+            <mat-cell *matCellDef="let row" style="text-align: right">
+              <button
+                mat-icon-button
+                matTooltip="Delete user"
+                matTooltipClass="custom-tooltip"
+                (click)="delete(row)"
+                
+              >
+                <mat-icon aria-label="Delete user">delete</mat-icon>
+              </button>
+            </mat-cell>
+          </ng-container>
+  
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+        </mat-table>
+      </div>
+    </div>
+
+    <!--
     <table class="table table-bordered">
       <tr class="bg-primary">
         <th>created at</th>
@@ -27,10 +64,14 @@
         <td>{{ user.updated_at }}</td>
         <td>{{ user.user_id }}</td>
         <td>{{ user.username }}</td>
-
+        
         
       </tr>
+      
+      
 
     </table>
+  -->
+    
   </div>
 </div>

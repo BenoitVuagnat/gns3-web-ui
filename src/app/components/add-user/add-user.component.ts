@@ -5,6 +5,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { ProjectNameValidator } from '../projects/models/projectNameValidator';
 import { projectNameAsyncValidator } from '../../validators/project-name-async-validator';
 import { UserService } from '../../services/user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-user',
@@ -18,6 +19,7 @@ export class AddUserComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<AddUserComponent>,
+    private router: Router,
     private dialog: MatDialog,
     private formBuilder: FormBuilder,
     private projectNameValidator: ProjectNameValidator,
@@ -51,7 +53,7 @@ export class AddUserComponent implements OnInit {
 
   onKeyDown(event) {
     if (event.key === 'Enter') {
-      //this.onAddClick();
+      this.onAddClick();
     }
   }
 
@@ -88,7 +90,8 @@ export class AddUserComponent implements OnInit {
       .subscribe(() => {
         this.dialogRef.close();
         //this.toasterService.success(`Project ${project.name} added`);
-        //this.router.navigate(['/server', this.server.id, 'project', project.project_id]);
+        //maybe just reload the component ?
+        //location.reload();
       });
   }
 

@@ -25,5 +25,23 @@ export class UserService {
     return this.httpServer.post(server, '/users', { username: username, email: email, full_name: full_name, password: password});
   }
 
+  updateUser(server: Server, username: string, email: string, full_name: string, password: string, user_id: string){
+    //return this.http.get("http://10.237.0.165:3080/v3/users");
+    if(password!=null)//we check this if the user wants to change the password
+    {
+      return this.httpServer.put(server, `/users/${user_id}`, { username: username, email: email, full_name: full_name, password: password});
+    }
+    else
+    {
+      return this.httpServer.put(server, `/users/${user_id}`, { username: username, email: email, full_name: full_name});
+    }
+    
+  }
+
+  deleteUser(server: Server, user_id: string)
+  {
+    return this.httpServer.delete(server, `/users/${user_id}`);
+  }
+
 
 }
