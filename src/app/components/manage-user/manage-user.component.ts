@@ -104,7 +104,7 @@ export class ManageUserComponent implements OnInit {
         [Validators.required, this.projectNameValidator.get],
         //[projectNameAsyncValidator(this.server, this.projectService)]
       ),
-    }, {validator: this.passwordValidator});
+    }, {validator: passwordValidator('password', 'confirm_password')});
     this.userForm.controls['username'].setValue(this.user.username);//we set the default values 
     this.userForm.controls['email'].setValue(this.user.email);
     this.userForm.controls['full_name'].setValue(this.user.full_name);
@@ -140,10 +140,10 @@ export class ManageUserComponent implements OnInit {
 
   }
 
-  passwordValidator(control : FormControl) : ValidationErrors | null {
-    let pwd = control.get('password');
+  passwordValidator(control : FormControl) : ValidationErrors | null {//my attempt at making a validator
+    let pwd = control.get('password').value;
     console.log('pwd',pwd);
-    let conpwd = control.get('confirm_password');
+    let conpwd = control.get('confirm_password').value;
     console.log('conpwd',conpwd);
     if(pwd !== conpwd){
       return { mustMatch: true };

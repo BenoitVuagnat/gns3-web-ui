@@ -130,7 +130,7 @@
         <mat-error *ngIf="form.projectName?.errors && form.projectName?.errors.projectExist"
           >User with this full name exists</mat-error
         >
-        <mat-error *ngIf="form.confirm_password?.errors.mustMatch"
+        <mat-error *ngIf="form.confirm_password?.errors && form.confirm_password?.errors.mustMatch"
           >Passwords must match</mat-error
         >
       </mat-form-field>

@@ -271,7 +271,9 @@ import { LoginComponent } from './components/login/login.component';
 import { LoginService } from './services/login.service';
 import { HttpRequestsInterceptor } from './interceptors/http.interceptor';
 import { UserManagementComponent } from './components/user-management/user-management.component'
+import { GroupManagementComponent } from './components/group-management/group-management.component'
 import { UserService } from './services/user.service';
+import { GroupService } from './services/group.service';
 import { LoggedUserComponent } from './components/users/logged-user/logged-user.component';
 import { AddUserComponent } from './components/add-user/add-user.component';
 import { ManageUserComponent } from './components/manage-user/manage-user.component';
@@ -462,6 +464,7 @@ import { ManageUserComponent } from './components/manage-user/manage-user.compon
     ConfigureCustomAdaptersDialogComponent,
     EditNetworkConfigurationDialogComponent,
     UserManagementComponent,
+    GroupManagementComponent,
     ProjectReadmeComponent,
     AddUserComponent,
     ManageUserComponent
@@ -561,7 +564,8 @@ import { ManageUserComponent } from './components/manage-user/manage-user.compon
     ApplianceService,
     UpdatesService,
     LoginService,
-    UserService
+    UserService,
+    GroupService
   ],
   entryComponents: [
     AddServerDialogComponent,
