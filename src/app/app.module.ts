@@ -276,7 +276,10 @@ import { UserService } from './services/user.service';
 import { GroupService } from './services/group.service';
 import { LoggedUserComponent } from './components/users/logged-user/logged-user.component';
 import { AddUserComponent } from './components/add-user/add-user.component';
+import { AddGroupComponent } from './components/add-group/add-group.component';
 import { ManageUserComponent } from './components/manage-user/manage-user.component';
+import { ManageGroupComponent } from './components/manage-group/manage-group.component';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
 @NgModule({
   declarations: [
@@ -467,7 +470,9 @@ import { ManageUserComponent } from './components/manage-user/manage-user.compon
     GroupManagementComponent,
     ProjectReadmeComponent,
     AddUserComponent,
-    ManageUserComponent
+    AddGroupComponent,
+    ManageUserComponent,
+    ManageGroupComponent
   ],
   imports: [
     BrowserModule,
@@ -488,6 +493,7 @@ import { ManageUserComponent } from './components/manage-user/manage-user.compon
     MATERIAL_IMPORTS,
     NgCircleProgressModule.forRoot(),
     OverlayModule,
+    MatAutocompleteModule
   ],
   providers: [
     SettingsService,

@@ -10,6 +10,10 @@ import { ServerService } from '@services/server.service';
 import { DataSource } from '@angular/cdk/collections';
 import { BehaviorSubject, merge, Observable } from 'rxjs';
 import { map } from 'rxjs//operators';
+import { AddGroupComponent } from '@components/add-group/add-group.component';
+import { ConfirmationBottomSheetComponent } from '../projects/confirmation-bottomsheet/confirmation-bottomsheet.component';
+import { User } from '@models/users/user';
+import { ManageGroupComponent } from '@components/manage-group/manage-group.component';
 
 @Component({
   selector: 'app-group-management',
@@ -47,6 +51,14 @@ export class GroupManagementComponent implements OnInit {
               this.groupDatabase.addGroups(groups);
             });
         });
+        this.serverService.get(+serverId).then((server: Server) => {//test for getting users from a specific group
+          this.server = server;
+          console.log("server 2 :",this.server);
+          this.groupService.getGroupMembers(server, "0c0136d6-8578-40d8-8694-2e1683df63d2").subscribe(
+          (users: User[]) => {
+            console.log("users:",users);
+          });
+      });
         console.log('sort:', this.sort);
         this.sort.sort(<MatSortable>{
           id: 'name',
@@ -54,6 +66,59 @@ export class GroupManagementComponent implements OnInit {
         });
         console.log("groupDatabase : ", this.groupDatabase);
         this.dataSource = new GroupDataSource(this.groupDatabase, this.sort);
+  }
+
+  addGroup() {
+    const dialogRef = this.dialog.open(AddGroupComponent, {
+      width: '400px',
+      autoFocus: false,
+      disableClose: true,
+    });
+    let instance = dialogRef.componentInstance;
+    instance.server = this.server;
+    dialogRef.afterClosed().subscribe(result => {
+      this.refresh();
+    });
+  }
+
+  manageGroup(group: Group) {
+    const dialogRef = this.dialog.open(ManageGroupComponent, {
+      width: '950px',
+      autoFocus: false,
+      disableClose: true,
+    });
+    let instance = dialogRef.componentInstance;
+    instance.server = this.server;
+    instance.group = group;
+  }
+
+  delete(group: Group) {
+    this.bottomSheet.open(ConfirmationBottomSheetComponent);
+    let bottomSheetRef = this.bottomSheet._openedBottomSheetRef;
+    bottomSheetRef.instance.message = 'Do you want to delete this group?';
+    const bottomSheetSubscription = bottomSheetRef.afterDismissed().subscribe((result: boolean) => {
+      if (result) {
+        this.groupService.deleteGroup(this.server, group.user_group_id).subscribe(() => {
+          //location.reload();
+          this.refresh();
+        });
+      }
+    });
+  }
+
+  refresh() {
+    let serverId = this.route.snapshot.paramMap.get('server_id');
+        this.serverService.get(+serverId).then((server: Server) => {
+            this.server = server;
+            console.log("server :",this.server);
+            /*this.userService.getUser(server).subscribe((response: any) => {
+              this.users = response;
+          });*/
+          this.groupService.getGroup(server).subscribe(
+            (groups: Group[]) => {
+              this.groupDatabase.addGroups(groups);
+            });
+        });
   }
 
 }
