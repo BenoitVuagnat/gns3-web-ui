@@ -83,4 +83,8 @@ export class DrawingService {
   delete(server: Server, drawing: Drawing) {
     return this.httpServer.delete<Drawing>(server, `/projects/${drawing.project_id}/drawings/${drawing.drawing_id}`);
   }
+
+  getDrawings(server: Server, projectId : string){
+    return this.httpServer.get(server, `/projects/${projectId}/drawings`);
+  }
 }

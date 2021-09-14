@@ -46,7 +46,7 @@ export class GroupService {
 
   addGroupMember(server: Server, user_group_id: string, user_id: string)
   {
-    return this.httpServer.put(server, `/groups/${user_group_id}/members/${user_id}`,'');
+    return this.httpServer.put(server, `/groups/${user_group_id}/members/${user_id}`,{});
   }
 
 }

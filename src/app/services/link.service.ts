@@ -58,6 +58,10 @@ export class LinkService {
     return this.httpServer.get<Link>(server, `/projects/${projectId}/links/${linkId}`);
   }
 
+  getLinks(server: Server, projectId: string) {
+    return this.httpServer.get(server, `/projects/${projectId}/links`);
+  }
+
   deleteLink(server: Server, link: Link) {
     return this.httpServer.delete(server, `/projects/${link.project_id}/links/${link.link_id}`);
   }

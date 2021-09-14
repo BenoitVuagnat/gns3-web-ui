@@ -54,7 +54,7 @@ export class GroupManagementComponent implements OnInit {
         this.serverService.get(+serverId).then((server: Server) => {//test for getting users from a specific group
           this.server = server;
           console.log("server 2 :",this.server);
-          this.groupService.getGroupMembers(server, "0c0136d6-8578-40d8-8694-2e1683df63d2").subscribe(
+          this.groupService.getGroupMembers(server, "db6da178-df60-43f7-946f-ec0ccb989af6").subscribe(
           (users: User[]) => {
             console.log("users:",users);
           });

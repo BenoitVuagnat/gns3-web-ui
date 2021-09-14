@@ -133,7 +133,10 @@ export class ManageGroupComponent implements OnInit {
       if(this.usernames.indexOf(this.groupUsers[i].username) == -1)//the user was deleted, no longer present in the new tab
       {
         console.log("user found and will be deleted");
-        this.groupService.deleteGroupMember(this.server,this.group.user_group_id,this.groupUsers[i].user_id);
+        this.groupService.deleteGroupMember(this.server,this.group.user_group_id,this.groupUsers[i].user_id)
+        .subscribe(() => {
+          console.log("user deleted");
+        });
       }
       //if(this.groupUsers[i].username==//.indexOf(this.usernames[i])//this.usernames[i]
       /*else{//we will now compare if the username is already present in the group
@@ -143,17 +146,24 @@ export class ManageGroupComponent implements OnInit {
         }
       }*/
     }
-    var isPresent = 0;//to see if the user is already in the group or not
+    console.log("not stuck at deleting users");
+    
+    var isPresent;
     for(var i=0;i<this.usernames.length; i++)
     {
-      for(var j=0;j<this.groupUsers.length; i++)
+      console.log("i:", i);
+      isPresent = 0;//to see if the user is already in the group or not
+      for(var j=0;j<this.groupUsers.length; j++)
       {
+        console.log("j:", j,",",this.groupUsers[j].username);
         if(this.usernames[i]==this.groupUsers[j].username)
         {
           isPresent = 1;
+          console.log("user ", this.usernames[i], "is already present");
           break;//user is already in the group, no need to continue
         }
       }
+      console.log("break for i = ", i);
       if(isPresent == 0){
         //we'll just find the corresponding user, with the username
         for(var k=0;k<this.allUsers.length; k++)
@@ -161,20 +171,21 @@ export class ManageGroupComponent implements OnInit {
           if(this.allUsers[k].username==this.usernames[i])
           {
             console.log("user found and will be added", this.allUsers[k].username);
-            this.groupService.addGroupMember(this.server,this.group.user_group_id, this.allUsers[k].user_id);
+            this.groupService.addGroupMember(this.server,this.group.user_group_id, this.allUsers[k].user_id)
+            .subscribe(() => {
+              console.log("user added");
+            });
           }
         }
-        
-        
       }
     }
+    console.log("not stuck at adding users");
     this.groupService
       .updateGroup(this.server, this.groupForm.controls['name'].value, this.group.user_group_id)
+      //.addGroupMember(this.server,"db6da178-df60-43f7-946f-ec0ccb989af6", "751afee4-9e88-41bb-b9b0-3720c95abea2")
       .subscribe(() => {
-        this.dialogRef.close();
-        //this.toasterService.success(`Project ${project.name} added`);
-        //maybe just reload the component ?
-        location.reload();
+        //this.dialogRef.close();
+        //location.reload();
       });
 
   }

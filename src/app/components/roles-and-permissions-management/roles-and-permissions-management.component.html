@@ -1,0 +1,171 @@
+<div class="default-header">
+  <h1 class="col">Roles and Permissions</h1>
+</div>
+<div class="default-content">
+    <div class="mat-elevation-z8">
+      <div class="rectangle" >
+        <a class="col" style="text-align:center" >Users</a>
+        <a class="col" style="text-align:center">Groups</a>
+        <a class="col" style="text-align:center">Roles and Permissions</a>
+      </div>
+    </div>
+
+
+  <div class="row">
+    <div class="col"></div>
+    <button class="col" mat-raised-button color="primary"  (click) ="addPermission()" class="add-button">
+      Add permission
+    </button>
+  </div>
+
+
+  <mat-tab-group animationDuration="0ms">
+    <mat-tab label="Roles">
+      <div class="content">
+        <div class="default-header">
+          <div class="default-content">
+            <div class="mat-elevation-z8">
+              <mat-table #table #roleSort="matSort" [dataSource]="roleDataSource | projectsfilter: searchText" matSort>
+                <ng-container matColumnDef="name">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell><!---->
+                  <mat-cell *matCellDef="let row">
+                    {{ row.name }}
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="created_at">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header> Created at </mat-header-cell>
+                  <mat-cell *matCellDef="let row"> {{ row.created_at }} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="actions">
+                  <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+                  <mat-cell *matCellDef="let row" style="text-align: right">
+                    <button
+                    mat-icon-button
+                    matTooltip="Delete permission"
+                    matTooltipClass="custom-tooltip"
+                  >
+                    <mat-icon aria-label="Delete permission">delete</mat-icon>
+                  </button>
+                  
+                  </mat-cell>
+                </ng-container>
+
+
+                <mat-header-row *matHeaderRowDef="displayedColumnsRoles "></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumnsRoles "></mat-row>
+              </mat-table>
+            </div>    
+          </div>
+        </div>
+      </div>
+    </mat-tab> 
+    <mat-tab label="Permissions"> 
+      <div class="content">
+        <div class="default-header">
+          <div class="default-content">
+            <div class="mat-elevation-z8">
+              <mat-table #table #permissionSort="matSort" [dataSource]="dataSource | projectsfilter: searchText" matSort>
+                <ng-container matColumnDef="path">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header> Path </mat-header-cell><!---->
+                  <mat-cell *matCellDef="let row">
+                    {{ row.path }}
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="right">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header> Right </mat-header-cell><!---->
+                  <mat-cell *matCellDef="let row">
+                    {{ row.action }}
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="methods">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header> Methods </mat-header-cell><!---->
+                  <mat-cell *matCellDef="let row">
+                    {{ row.methods }}
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="created_at">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header> Created at </mat-header-cell>
+                  <mat-cell *matCellDef="let row"> {{ row.created_at }} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="actions">
+                  <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+                  <mat-cell *matCellDef="let row" style="text-align: right">
+                    <button
+                    mat-icon-button
+                    matTooltip="Delete permission"
+                    matTooltipClass="custom-tooltip"
+                  >
+                    <mat-icon aria-label="Delete permission">delete</mat-icon>
+                  </button>
+                  
+                  </mat-cell>
+                </ng-container>
+
+
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+              </mat-table>
+            </div>    
+          </div>
+        </div>
+      </div>
+    </mat-tab>
+    <mat-tab label="Objects"> 
+
+      <mat-form-field appearance="fill" >
+        <mat-label>Choose an object type</mat-label>
+        <mat-select (valueChange)="onTypeChange($event)">
+          <mat-option value="All">All</mat-option>
+          <mat-option value="Projects">Projects</mat-option>
+          <mat-option value="Roles">Roles</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <div class="content">
+        <mat-form-field appearance="standard">
+          <mat-label>Search</mat-label>
+          <input matInput (keyup)="applyFilter($event)" placeholder="" #input>
+        </mat-form-field>
+        
+        <div class="default-header">
+          <div class="default-content">
+            <div class="mat-elevation-z8">
+              <mat-table #table #projectSort="matSort" [dataSource]="projectDataSource | projectsfilter: searchText" matSort>
+                
+                <ng-container matColumnDef="type">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header> Type </mat-header-cell><!---->
+                  <mat-cell *matCellDef="let row">
+                    {{ row.type }}
+                  </mat-cell>
+                </ng-container>
+                
+                <ng-container matColumnDef="name">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell><!---->
+                  <mat-cell *matCellDef="let row">
+                    {{ row.name }}
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="created_at">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header> Created at </mat-header-cell>
+                  <mat-cell *matCellDef="let row"> {{ row.created_at }} </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumnsObjects"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumnsObjects"></mat-row>
+              </mat-table>
+              <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+            </div>    
+          </div>
+        </div>
+      </div>
+      
+    </mat-tab>
+</mat-tab-group>
+</div>

@@ -1,0 +1,165 @@
+<p>
+  Add permission
+</p>
+
+<mat-form-field appearance="fill" >
+  <mat-label>Choose an object type</mat-label>
+  <mat-select>
+    <mat-option value="All">All</mat-option>
+    <mat-option value="Projects">Projects</mat-option>
+    <mat-option value="Roles">Roles</mat-option>
+  </mat-select>
+</mat-form-field>
+
+<div class="content">
+  
+  
+  <div class="wrapper">
+  <div class="one">
+    <mat-form-field appearance="standard">
+      <mat-label>Search objects</mat-label>
+      <input matInput (keyup)="applyFilter($event)" placeholder="" #input>
+    </mat-form-field>
+  <div class="default-header">
+    <div class="default-content">
+      <div class="mat-elevation-z8">
+        <table mat-table #table #projectSort="matSort" multiTemplateDataRows [dataSource]="projectDataSource | projectsfilter: searchText" matSort>
+          
+          <ng-container matColumnDef="select">
+            <mat-header-cell mat-header-cell *matHeaderCellDef>
+              <mat-checkbox (change)="$event ? masterToggle() : null"
+                            [checked]="selection.hasValue() && isAllSelected()"
+                            [indeterminate]="selection.hasValue() && !isAllSelected()">
+              </mat-checkbox>
+            </mat-header-cell>
+            <mat-header-cell mat-cell *matCellDef="let row">
+              <mat-checkbox (click)="$event.stopPropagation()"
+                            (click)= "maisnan()"
+                            (change)="$event ? selection.toggle(row) : null"
+                            [checked]="selection.isSelected(row)">
+              </mat-checkbox>
+            </mat-header-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="type">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Type </mat-header-cell><!---->
+            <mat-cell *matCellDef="let row">
+              {{ row.type }}
+            </mat-cell>
+          </ng-container>
+          
+          <ng-container matColumnDef="name">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell><!---->
+            <mat-cell *matCellDef="let row">
+              {{ row.name }}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="created_at">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Created at </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{ row.created_at }} </mat-cell>
+          </ng-container>
+
+          <div class="element-row">
+          <ng-container matColumnDef="expandedDetail">
+            <mat-cell *matCellDef="let row"> 
+              <mat-checkbox (click)= "maisnan2(row)"
+                            (click)="$event.stopPropagation()"
+                            (change)="$event ? selection3.toggle(row) : null"
+                            [checked]="selection3.isSelected(row)">
+                GET  
+              </mat-checkbox>
+              <mat-checkbox >
+                PUT
+              </mat-checkbox>
+              
+              <mat-form-field appearance="fill">
+                <mat-label>Choose an option</mat-label>
+                <mat-select 
+                (valueChange)="onTypeChange($event)"
+                (click)="$event.stopPropagation()"
+                (change)="$event ? selectionAction.toggle(row) : null"
+                [checked]="selectionAction.isSelected(row)">
+                  <mat-option value="ALLOW">Allow</mat-option>
+                  <mat-option value="DENY">Deny</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </mat-cell>
+          </ng-container>
+        </div>
+
+          <mat-header-row *matHeaderRowDef="displayedColumnsObjects"></mat-header-row>
+          <mat-row *matRowDef="let element; columns: displayedColumnsObjects;"
+          class="element-row" 
+            [class.expanded]="expandedElement == element"
+          (click)="expandedElement = expandedElement === element ? null : element"
+          (click)="selection.toggle(element)"></mat-row>
+          <mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"
+          [@detailExpand]="row == expandedElement ? 'expanded' : 'collapsed'" ></mat-row>
+        </table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of objects"
+        ></mat-paginator>
+        
+        
+      </div>   
+    </div>
+  </div>
+</div>
+
+  <div class="two">
+    <mat-form-field appearance="standard">
+      <mat-label>Search users and roles</mat-label>
+      <input matInput (keyup)="applyFilter2($event)" placeholder="" #input>
+    </mat-form-field>
+  <div class="default-header">
+    <div class="default-content">
+      <div class="mat-elevation-z8">
+        <mat-table #table #userSort="matSort" [dataSource]="projectDataSource2 | projectsfilter: searchText2" matSort>
+          
+          <ng-container matColumnDef="select">
+            <mat-header-cell mat-header-cell *matHeaderCellDef>
+              <mat-checkbox (change)="$event ? masterToggle2() : null"
+                            [checked]="selection2.hasValue() && isAllSelected2()"
+                            [indeterminate]="selection2.hasValue() && !isAllSelected2()">
+              </mat-checkbox>
+            </mat-header-cell>
+            <mat-header-cell mat-cell *matCellDef="let row">
+              <mat-checkbox (click)="$event.stopPropagation()"
+                            (change)="$event ? selection2.toggle(row) : null"
+                            [checked]="selection2.isSelected(row)">
+              </mat-checkbox>
+            </mat-header-cell>
+          </ng-container>
+
+
+          <ng-container matColumnDef="type">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Type </mat-header-cell><!---->
+            <mat-cell *matCellDef="let row">
+              {{ row.type }}
+            </mat-cell>
+          </ng-container>
+          
+          <ng-container matColumnDef="name">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell><!---->
+            <mat-cell *matCellDef="let row">
+              {{ row.name }}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="created_at">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Created at </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{ row.created_at }} </mat-cell>
+          </ng-container>
+
+          <mat-header-row *matHeaderRowDef="displayedColumnsObjects"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumnsObjects;" (click)="selection2.toggle(row)"></mat-row>
+        </mat-table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+
+        
+      </div>    
+    </div>
+  </div>
+</div>
+</div>
+</div>

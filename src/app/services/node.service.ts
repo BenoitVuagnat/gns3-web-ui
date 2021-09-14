@@ -196,6 +196,10 @@ export class NodeService {
     return this.httpServer.get(server, urlPath, { responseType: 'text' as 'json' });
   }
 
+  list(server: Server, project : Project) {//will get all nodes from a single project
+    return this.httpServer.get(server, `/projects/${project.project_id}/nodes`);
+  }
+
   saveConfiguration(server: Server, node: Node, configuration: string) {
     let urlPath: string = `/projects/${node.project_id}/nodes/${node.node_id}`;
 

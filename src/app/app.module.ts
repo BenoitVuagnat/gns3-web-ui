@@ -274,12 +274,19 @@ import { UserManagementComponent } from './components/user-management/user-manag
 import { GroupManagementComponent } from './components/group-management/group-management.component'
 import { UserService } from './services/user.service';
 import { GroupService } from './services/group.service';
+import { PermissionService } from './services/permission.service';
+import { RoleService } from './services/role.service';
 import { LoggedUserComponent } from './components/users/logged-user/logged-user.component';
 import { AddUserComponent } from './components/add-user/add-user.component';
 import { AddGroupComponent } from './components/add-group/add-group.component';
 import { ManageUserComponent } from './components/manage-user/manage-user.component';
 import { ManageGroupComponent } from './components/manage-group/manage-group.component';
-import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { RolesAndPermissionsManagementComponent } from './components/roles-and-permissions-management/roles-and-permissions-management.component';
+import { AddPermissionComponent } from './components/add-permission/add-permission.component';
+import { MatExpansionModule } from '@angular/material/expansion';
+
+
 
 @NgModule({
   declarations: [
@@ -472,7 +479,9 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
     AddUserComponent,
     AddGroupComponent,
     ManageUserComponent,
-    ManageGroupComponent
+    ManageGroupComponent,
+    RolesAndPermissionsManagementComponent,
+    AddPermissionComponent
   ],
   imports: [
     BrowserModule,
@@ -493,7 +502,8 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
     MATERIAL_IMPORTS,
     NgCircleProgressModule.forRoot(),
     OverlayModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatExpansionModule
   ],
   providers: [
     SettingsService,
@@ -571,7 +581,9 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
     UpdatesService,
     LoginService,
     UserService,
-    GroupService
+    GroupService,
+    PermissionService,
+    RoleService
   ],
   entryComponents: [
     AddServerDialogComponent,

@@ -57,6 +57,7 @@ import { DefaultLayoutComponent } from './layouts/default-layout/default-layout.
 import { ServerResolve } from './resolvers/server-resolve';
 import { UserManagementComponent } from './components/user-management/user-management.component';
 import { GroupManagementComponent } from './components/group-management/group-management.component';
+import { RolesAndPermissionsManagementComponent } from './components/roles-and-permissions-management/roles-and-permissions-management.component';
 import { LoggedUserComponent } from './components/users/logged-user/logged-user.component';
 
 const routes: Routes = [
@@ -201,6 +202,11 @@ const routes: Routes = [
       {
         path: 'server/:server_id/group_management',
         component: GroupManagementComponent,
+        canActivate: [LoginGuard]
+      },
+      {
+        path: 'server/:server_id/roles_and_permissions_management',
+        component: RolesAndPermissionsManagementComponent,
         canActivate: [LoginGuard]
       },
     ],
