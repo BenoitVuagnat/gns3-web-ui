@@ -1,11 +1,49 @@
 import { Component, OnInit } from '@angular/core';
 import { Server } from '../../models/server';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { ProjectNameValidator } from '../projects/models/projectNameValidator';
 import { projectNameAsyncValidator } from '../../validators/project-name-async-validator';
 import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
+import { ErrorStateMatcher } from '@angular/material/core';
+
+export function passwordValidator(controlName: string, matchingControlName: string)  {//, control2 : FormControl){
+  return (formGroup: FormGroup) => {
+    const control = formGroup.controls[controlName];
+    const matchingControl = formGroup.controls[matchingControlName];
+    console.log("pwd ",control);
+    if (matchingControl.errors && !matchingControl.errors.mustMatch) {
+        // return if another validator has already found an error on the matchingControl
+        return;
+    }
+
+    // set error on matchingControl if validation fails
+    if (control.value !== matchingControl.value) {
+        matchingControl.setErrors({ mustMatch: true });
+    } else {
+        matchingControl.setErrors(null);
+    }
+  }
+}
+
+export class MyErrorStateMatcher implements ErrorStateMatcher {
+  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+    const invalidCtrl = !!(control && control.invalid && control.parent.dirty);
+    const invalidParent = !!(control && control.parent && control.parent.invalid && control.parent.dirty);
+
+    return (invalidCtrl || invalidParent);
+  }
+}
+
+export const identityRevealedValidator: ValidatorFn = (group: AbstractControl): ValidationErrors | null => {
+  const pass = group.get('password').value;
+  const confirmPass = group.get('confirm_password').value;
+  console.log("pwd ", pass);
+  console.log("conpwd ", confirmPass);
+
+  return pass === confirmPass ? null : { notSame: true }
+};
 
 @Component({
   selector: 'app-add-user',
@@ -16,6 +54,7 @@ import { Router } from '@angular/router';
 export class AddUserComponent implements OnInit {
   server: Server;
   projectNameForm: FormGroup;
+  matcher = new MyErrorStateMatcher();
 
   constructor(
     public dialogRef: MatDialogRef<AddUserComponent>,
@@ -48,7 +87,12 @@ export class AddUserComponent implements OnInit {
         [Validators.required, this.projectNameValidator.get],
         //[projectNameAsyncValidator(this.server, this.projectService)]
       ),
-    });
+      confirm_password: new FormControl(
+        null,
+        [Validators.required, this.projectNameValidator.get],
+        //[projectNameAsyncValidator(this.server, this.projectService)]
+      ),
+    },{validator: passwordValidator('password', 'confirm_password')});
   }
 
   onKeyDown(event) {
@@ -93,6 +137,13 @@ export class AddUserComponent implements OnInit {
         //maybe just reload the component ?
         //location.reload();
       });
+  }
+
+  checkPasswords(group: FormGroup) { // here we have the 'passwords' group
+    let pass = group.controls.password.value;
+    let confirmPass = group.controls.confirmPassword.value;
+
+    return pass === confirmPass ? null : { notSame: true }
   }
 
 }

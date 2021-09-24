@@ -3,6 +3,13 @@
     
     <div class="row">
       <h1 class="col">User Management</h1>
+      <div class="mat-elevation-z8">
+        <div class="rectangle" >
+          <a class="col" style="text-align:center">Users</a>
+          <a class="col" style="text-align:center" [routerLink] (click)= "goToGroupManagement()">Groups</a>
+          <a class="col" style="text-align:center" [routerLink] (click)= "goToPermissionManagement()">Roles and Permissions</a>
+        </div>
+      </div>
       <button class="col" mat-raised-button color="primary" (click)="addUser()" class="add-button">
         Add user
       </button>

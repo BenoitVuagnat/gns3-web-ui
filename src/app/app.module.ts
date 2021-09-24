@@ -284,6 +284,7 @@ import { ManageGroupComponent } from './components/manage-group/manage-group.com
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { RolesAndPermissionsManagementComponent } from './components/roles-and-permissions-management/roles-and-permissions-management.component';
 import { AddPermissionComponent } from './components/add-permission/add-permission.component';
+import { AddPermissionConfirmationComponent } from './components/add-permission-confirmation/add-permission-confirmation.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 
 
@@ -481,7 +482,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
     ManageUserComponent,
     ManageGroupComponent,
     RolesAndPermissionsManagementComponent,
-    AddPermissionComponent
+    AddPermissionComponent,
+    AddPermissionConfirmationComponent
   ],
   imports: [
     BrowserModule,

@@ -1,10 +1,12 @@
 import {  animate, state, style, transition, trigger  } from '@angular/animations';
 import { SelectionModel } from '@angular/cdk/collections';
 import { ChangeDetectorRef, Component, OnInit, QueryList, TemplateRef, ViewChild, ViewChildren } from '@angular/core';
-import { FormArray } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { AddPermissionConfirmationComponent } from '@components/add-permission-confirmation/add-permission-confirmation.component';
 import { Gns3object } from '@components/roles-and-permissions-management/roles-and-permissions-management.component';
 import { Role } from '@models/roles/role';
 import { Server } from '@models/server';
@@ -33,19 +35,42 @@ export class AddPermissionComponent implements OnInit {
   allDataTab2:Gns3object[];//containing roles and users
   displayedColumnsObjects = ['select','type', 'name', 'created_at'];
 
-  selection = new SelectionModel<any>(true, []);
-  selection2 = new SelectionModel<any>(true, []);
+  selection = new SelectionModel<any>(true, []);//keep track of the objects choosen by the user
+  selection2 = new SelectionModel<any>(true, []);//keep track of the roles and uses choosen by the user
   selection3 = new SelectionModel<any>(true, []);
 
   selectionAction = new SelectionModel;
   
   formAction = new FormArray([]);
+
+  permissionForm = new FormGroup({
+    actionForm: new FormControl('',[Validators.required]),
+    objectForm: new FormControl(''),
+    methodForm: new FormControl(''),
+    methodForm2: new FormControl(''),
+    methodForm3: new FormControl(''),
+    methodForm4: new FormControl('')//one for each method (get, post, put, delete)
+  });
+
+  types = new FormControl();// all types selected by the user
+
+  typeList: string[] = ['appliance', 'drawing', 'link', 'node', 'permission', 'project', 'role','snapshot','symbol','template'];
   
   isExpansionDetailRow = (i: number, row: Object) => row.hasOwnProperty('detailRow');
   expandedElement: Gns3object[] = [];
 
   searchText: string = '';
   searchText2: string = '';
+
+  public toggles = [//keep track of what methods the user wants for his permissions
+    { value: 'untoggled', display: 'GET' },
+    { value: 'untoggled', display: 'POST' },
+    { value: 'untoggled', display: 'PUT' },
+    { value: 'untoggled', display: 'DELETE' }
+  ];
+
+  action : string =""; //either ALLOW or DENY
+
 
   @ViewChild('projectSort',{static: true}) sort3: MatSort;
   @ViewChild('userSort',{static: true}) sort4: MatSort;
@@ -57,6 +82,8 @@ export class AddPermissionComponent implements OnInit {
   constructor(
     private userService:UserService,
     private roleService:RoleService,
+    public dialogRef: MatDialogRef<AddPermissionComponent>,
+    private dialog: MatDialog,
     private cd: ChangeDetectorRef
   ) { }
 
@@ -138,7 +165,6 @@ export class AddPermissionComponent implements OnInit {
         this.projectDataSource2 = new MatTableDataSource(this.allDataTab2);
         this.projectDataSource2.paginator= this.paginator2.toArray()[1]
         this.projectDataSource2.sort = this.sort4;
-        //this.projectDataSource = this.projectDataSource = new MatTableDataSource(this.allDataTab2);
       });
     });
   }
@@ -197,17 +223,69 @@ export class AddPermissionComponent implements OnInit {
     console.log("selection2", row);
   }
 
+  toArray():string[]//transforms toggles to an array containing the methods toggled
+  {
+    var stringArray = new Array();
+    for(var i=0; i<this.toggles.length; i++)
+    {
+      if(this.toggles[i].value == "toggled"){
+        stringArray.push(this.toggles[i].display)
+      }
+    }
+    return stringArray;
+    console.log("array methods", stringArray);
+  }
+
+  updateMethods(i :number){//function used to keep track of the methods the user wants for his permissions
+    if(this.toggles[i].value == "untoggled")
+    {this.toggles[i].value = "toggled"} 
+    else
+    this.toggles[i].value = "untoggled"
+  }
+
   maisnanAction(row :object){
     console.log("selection2", row);
     this.formAction.insert;
     console.log("allow or deny ",this.formAction);
   }
 
-  onTypeChange(type: string)
+  onTypeChange(type: string)//WIP : when the user chooses a specific object type
   {
     console.log("works :", type);
     
     //this.formAction.
+  }
+
+  onActionChange(action: string)//we get the new action (allow or deny) chose by the user
+  {
+    this.action = action;
+    console.log("action :", this.action);
+  }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+  onAddClick(): void{
+    if (!this.permissionForm.valid || this.selection.isEmpty()) {
+      return;
+    }
+    for(var i=0; i < this.selection.selected.length; i++)
+    {
+      console.log("permission :",this.action," ",this.toggles,this.selection.selected[i].name)
+    }
+    
+    const dialogRef = this.dialog.open(AddPermissionConfirmationComponent, {
+      width: '1400px',
+      autoFocus: false,
+      disableClose: true,
+    });
+    let instance = dialogRef.componentInstance;
+    instance.methods = this.toArray();
+    instance.action = this.action;
+    instance.objects = this.selection.selected;
+    instance.destinations = this.selection2.selected;
+    instance.server = this.server;
   }
 
 
@@ -215,17 +293,26 @@ export class AddPermissionComponent implements OnInit {
     //this.cd.detectChanges();
     //this.cd.detectChanges();
     
-    /*setInterval(() => {
-      //this.cd.detach();
-      this.cd.detach();
-      this.cd.detectChanges();
-      this.cd.reattach();
-    }, 5000);*/
-    
     this.projectDataSource.paginator = this.paginator2.toArray()[0]
     this.projectDataSource.sort = this.sort3;
 
-    //
+  }
+
+  filterWithType(type: string[]){//filter all objects with specific object types that the user can select or deselect
+    if(type.length ==0){//if nothing is filtered we just show all items
+      this.projectDataSource = new MatTableDataSource(this.allDataTab);
+      this.projectDataSource.paginator = this.paginator2.toArray()[0]
+      this.projectDataSource.sort = this.sort3;
+      this.projectDataSource._updateChangeSubscription();
+    }
+    else{
+      const filtArray = this.allDataTab.filter(data => type.indexOf(data.type)!=-1);//we check if the type IS selected
+      console.log(filtArray);
+      this.projectDataSource = new MatTableDataSource(filtArray);
+      this.projectDataSource.paginator = this.paginator2.toArray()[0]
+      this.projectDataSource.sort = this.sort3;
+      this.projectDataSource._updateChangeSubscription(); 
+    }
   }
 
   applyFilter(event: Event) {//search feature

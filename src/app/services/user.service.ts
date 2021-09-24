@@ -22,6 +22,10 @@ export class UserService {
 
   createUser(server: Server, username: string, email: string, full_name: string, password: string){
     //return this.http.get("http://10.237.0.165:3080/v3/users");
+    if(password == "")
+    {
+      return this.httpServer.post(server, '/users', { username: username, email: email, full_name: full_name});
+    }
     return this.httpServer.post(server, '/users', { username: username, email: email, full_name: full_name, password: password});
   }
 
@@ -36,6 +40,11 @@ export class UserService {
       return this.httpServer.put(server, `/users/${user_id}`, { username: username, email: email, full_name: full_name});
     }
     
+  }
+
+  addPermission(server : Server, user_id: string, permission_id : string)
+  {
+    return this.httpServer.put(server, `/users/${user_id}/permissions/${permission_id}`, {});
   }
 
   deleteUser(server: Server, user_id: string)

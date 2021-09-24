@@ -4,8 +4,8 @@
 <div class="default-content">
     <div class="mat-elevation-z8">
       <div class="rectangle" >
-        <a class="col" style="text-align:center" >Users</a>
-        <a class="col" style="text-align:center">Groups</a>
+        <a class="col" style="text-align:center" [routerLink] (click)= "goToUserManagement()">Users</a>
+        <a class="col" style="text-align:center" [routerLink] (click)= "goToGroupManagement()">Groups</a>
         <a class="col" style="text-align:center">Roles and Permissions</a>
       </div>
     </div>
@@ -100,6 +100,7 @@
                     mat-icon-button
                     matTooltip="Delete permission"
                     matTooltipClass="custom-tooltip"
+                    (click)="deletePermission(row)"
                   >
                     <mat-icon aria-label="Delete permission">delete</mat-icon>
                   </button>

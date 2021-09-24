@@ -1,3 +1,16 @@
+.rectangle {
+  width: 860px;
+  height: 97px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 28px;
+  line-height: 33px;
+}
+
 .add-button {
     height: 40px;
     width: 160px;
@@ -7,4 +20,8 @@
   .row {
     display: flex;
   }
+
+  a { 
+    color: #F7F5F8;
+}
   

@@ -4,7 +4,7 @@ import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSort, MatSortable } from '@angular/material/sort';
 import {MatPaginator} from '@angular/material/paginator';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Server } from '@models/server';
 import { PermissionService } from '@services/permission.service';
 import { ServerService } from '@services/server.service';
@@ -36,6 +36,7 @@ import { SnapshotService } from '@services/snapshot.service';
 import { Snapshot } from '@models/snapshot';
 import { resolve } from 'path/posix';
 import { AddPermissionComponent } from '@components/add-permission/add-permission.component';
+import { ConfirmationBottomSheetComponent } from '@components/projects/confirmation-bottomsheet/confirmation-bottomsheet.component';
 
 
 @Component({
@@ -86,6 +87,7 @@ export class RolesAndPermissionsManagementComponent implements OnInit {
     private symbolService: SymbolService,
     public dialog: MatDialog,
     private bottomSheet: MatBottomSheet,
+    private router: Router,
   ) { }
 
   ngOnInit() {
@@ -518,7 +520,6 @@ export class RolesAndPermissionsManagementComponent implements OnInit {
                                 const gns3Ob : Gns3object ={
                                   created_at : value.created_at,
                                   name : value.path,
-                                  //this.createPermissionName(value)
                                   id :value.permission_id,
                                   projet_id : "",
                                   project_name : "",
@@ -554,17 +555,29 @@ export class RolesAndPermissionsManagementComponent implements OnInit {
 
           
         });
-      console.log("allDataTab end :",this.allDataTab);
     }
-    console.log("allDataTab end end :",this.allDataTab);
-    
-    /*console.log('sort:', this.sort3);
-        this.sort3.sort(<MatSortable>{
-          id: 'name',
-          start: 'asc',
+  }
+
+  deletePermission(permission: Permission) {
+    this.bottomSheet.open(ConfirmationBottomSheetComponent);
+    let bottomSheetRef = this.bottomSheet._openedBottomSheetRef;
+    bottomSheetRef.instance.message = 'Do you want to delete this permission?';
+    console.log("this serv :", this.server);
+    const bottomSheetSubscription = bottomSheetRef.afterDismissed().subscribe((result: boolean) => {
+      if (result) {
+        this.permissionService.deletePermission(this.server, permission.permission_id).subscribe(() => {
+          //location.reload();
+          this.refresh();
         });
-    console.log('allDatabase:', this.allDatabase);
-    this.projectDataSource = new ObjectDataSource(this.allDatabase, this.sort3);*/
+      }
+    });
+  }
+
+  refresh() {//we use this to only refresh the displayed permissions instead of the whole page
+    this.permissionService.getPermissions(this.server).subscribe(
+      (permissions: Permission[]) => {
+        this.groupDatabase.addPermissions(this.formatPermssion(permissions));
+    });
   }
 
   applyFilter(event: Event) {//search feature
@@ -574,6 +587,20 @@ export class RolesAndPermissionsManagementComponent implements OnInit {
     if (this.projectDataSource.paginator) {
       this.projectDataSource.paginator.firstPage();
     }
+  }
+
+  goToUserManagement() {
+    let serverId = this.router.url.split("/server/")[1].split("/")[0];
+    this.serverService.get(+serverId).then((server: Server) => {
+      this.router.navigate(['/server', server.id, 'user_management']);
+    });
+  }
+
+  goToGroupManagement() {
+    let serverId = this.router.url.split("/server/")[1].split("/")[0];
+    this.serverService.get(+serverId).then((server: Server) => {
+      this.router.navigate(['/server', server.id, 'group_management']);
+    });
   }
 
 }

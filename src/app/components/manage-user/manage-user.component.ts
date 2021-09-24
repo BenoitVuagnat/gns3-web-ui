@@ -26,15 +26,6 @@ export function passwordValidator(controlName: string, matchingControlName: stri
         matchingControl.setErrors(null);
     }
   }
-  /*
-  //let pwd = control.get;
-  console.log("pwd ",userForm: FormGroupcontrol.value);
-  let conpwd = control.get('confirm_password');
-  console.log("conpwd ", control.get('confirm_password'));
-  if(pwd !== conpwd){
-    return { passwordValidator: true };
-  }
-  return null;*/
 }
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -96,12 +87,12 @@ export class ManageUserComponent implements OnInit {
       ),
       password: new FormControl(
         null,
-        [Validators.required, this.projectNameValidator.get],
+        [this.projectNameValidator.get],
         //[projectNameAsyncValidator(this.server, this.projectService)]
       ),
       confirm_password: new FormControl(
         null,
-        [Validators.required, this.projectNameValidator.get],
+        [this.projectNameValidator.get],
         //[projectNameAsyncValidator(this.server, this.projectService)]
       ),
     }, {validator: passwordValidator('password', 'confirm_password')});
@@ -129,6 +120,9 @@ export class ManageUserComponent implements OnInit {
   }
 
   updateUser(){
+    if(this.userForm.invalid){
+      return;
+    }
     this.userService
       .updateUser(this.server, this.userForm.controls['username'].value, this.userForm.controls['email'].value, this.userForm.controls['full_name'].value, this.userForm.controls['password'].value, this.user.user_id)
       .subscribe(() => {

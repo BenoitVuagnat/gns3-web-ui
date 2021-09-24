@@ -16,4 +16,10 @@ constructor(
     return this.httpServer.get(server, '/roles');
   }
 
+  addPermission(server : Server, role_id: string, permission_id : string)
+  {
+    return this.httpServer.put(server, `/roles/${role_id}/permissions/${permission_id}`, {});
+  }
+
+
 }

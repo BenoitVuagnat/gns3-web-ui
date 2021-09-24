@@ -1,4 +1,4 @@
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit,ViewChild  } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { Server } from '../../models/server';
@@ -39,6 +39,7 @@ export class UserManagementComponent implements OnInit {
     private serverService: ServerService,
     public dialog: MatDialog,
     private bottomSheet: MatBottomSheet,
+    private router: Router,
     ) {}
 
   ngOnInit() {
@@ -124,6 +125,20 @@ export class UserManagementComponent implements OnInit {
               this.userDatabase.addUsers(users);
             });
         });
+  }
+
+  goToGroupManagement() {
+    let serverId = this.router.url.split("/server/")[1].split("/")[0];
+    this.serverService.get(+serverId).then((server: Server) => {
+      this.router.navigate(['/server', server.id, 'group_management']);
+    });
+  }
+
+  goToPermissionManagement() {
+    let serverId = this.router.url.split("/server/")[1].split("/")[0];
+    this.serverService.get(+serverId).then((server: Server) => {
+      this.router.navigate(['/server', server.id, 'roles_and_permissions_management']);
+    });
   }
 
 }

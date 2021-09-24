@@ -1,0 +1,12 @@
+<p>
+  You are about to add those permissions : 
+</p>
+<div class="example-events">
+  <div *ngFor="let p of permissionsRecap">{{p}}</div>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()" color="accent">Close</button>
+  <button mat-button (click)="onAddClick()" tabindex="2" class="add-project-button" mat-raised-button color="primary">
+    Confirm
+  </button>
+</div>
